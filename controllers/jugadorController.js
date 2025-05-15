@@ -24,7 +24,8 @@ exports.crearJugador = async (req, res) => {
     foto_url
   } = req.body;
 
-  if (!nombre || !apellido || !numero) {
+  if (!nombre || !apellido || !fecha_nacimiento || !posicion_inicial || !posicion_secundaria  || !numero) {
+    console.error('Faltan datos obligatorios', req.body);
     return res.status(400).json({ error: 'Nombre, apellido y número son obligatorios' });
   }
 
@@ -38,9 +39,9 @@ exports.crearJugador = async (req, res) => {
       [
         nombre,
         apellido,
-        fecha_nacimiento || null,
-        posicion_inicial || '',
-        posicion_secundaria || '',
+        fecha_nacimiento,
+        posicion_inicial,
+        posicion_secundaria,
         numero,
         foto_url || ''
       ]

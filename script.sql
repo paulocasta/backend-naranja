@@ -9,12 +9,10 @@ CREATE TABLE IF NOT EXISTS jugador (
   nombre VARCHAR(50) NOT NULL,
   apellido VARCHAR(30) NOT NULL,
   fecha_nacimiento DATE NOT NULL,
-  posicion_inicial ENUM('Arquero', 'Defensa', 'Mediocampista', 'Delantero') NOT NULL,
-  posicion_secundaria ENUM('Arquero', 'Defensa', 'Mediocampista', 'Delantero') NOT NULL,
+  posicion_inicial ENUM('Arquero', 'Defensor', 'Mediocampista', 'Delantero') NOT NULL,
+  posicion_secundaria ENUM('Arquero', 'Defensor', 'Mediocampista', 'Delantero') NOT NULL,
   numero INT NOT NULL,
-  foto_url VARCHAR(255),
-  tarjetas_amarillas INT DEFAULT 0,
-  tarjetas_rojas INT DEFAULT 0
+  foto_url VARCHAR(255)
 );
 
 -- Tabla de partido
