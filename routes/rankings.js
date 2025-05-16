@@ -8,5 +8,6 @@ router.get('/tarjetas', rankingsController.rankingTarjetas);
 router.get('/partidos', rankingsController.rankingPartidos);
 router.get('/amarillas', rankingsController.rankingAmarillas);
 router.get('/rojas', rankingsController.rankingRojas);
+router.get('/top3', rankingsController.top3);
 
 module.exports = router;
