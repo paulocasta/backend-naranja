@@ -50,3 +50,35 @@ exports.historialJugador = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener historial del jugador' });
   }
 };
+
+exports.goleadoresPorPartido = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [rows] = await db.query(`
+      SELECT j.nombre, j.apellido, e.goles
+      FROM estadistica_partido e
+      JOIN jugador j ON e.jugador_id = j.id
+      WHERE e.partido_id = ? AND e.goles > 0
+    `, [id]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener goleadores' });
+  }
+};
+
+exports.detallesPorPartido = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [rows] = await db.query(`
+      SELECT j.nombre, j.apellido,
+             e.goles, e.asistencias,
+             e.tarjetas_amarillas, e.tarjetas_rojas
+      FROM estadistica  _partido e
+      JOIN jugador j ON e.jugador_id = j.id
+      WHERE e.partido_id = ?
+    `, [id]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener detalles del partido' });
+  }
+};

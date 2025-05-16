@@ -15,11 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/foto', upload.single('foto'), (req, res) => {
-  console.log('Foto');   
-  console.log(req.file); // Log the file information for debugging
-
   const fileUrl = `/uploads/${req.file.filename}`;
-  console.log(fileUrl)
   res.json({ url: fileUrl });
 });
 
