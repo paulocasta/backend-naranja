@@ -4,7 +4,7 @@ const db = require('../db');
 exports.rankingGoleadores = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT j.id, j.nombre, SUM(e.goles) AS total_goleadores
+      SELECT j.id, j.nombre, j.apellido, SUM(e.goles) AS total_goleadores
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       GROUP BY j.id
@@ -21,7 +21,7 @@ exports.rankingGoleadores = async (req, res) => {
 exports.rankingAsistidores = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT j.id, j.nombre, SUM(e.asistencias) AS total_asistencias
+      SELECT j.id, j.nombre, j.apellido, SUM(e.asistencias) AS total_asistencias
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       GROUP BY j.id
@@ -38,7 +38,7 @@ exports.rankingAsistidores = async (req, res) => {
 exports.rankingTarjetas = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT j.id, j.nombre, SUM(e.tarjetas) AS total_tarjetas
+      SELECT j.id, j.nombre, j.apellido, SUM(e.tarjetas) AS total_tarjetas
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       GROUP BY j.id
@@ -55,7 +55,7 @@ exports.rankingTarjetas = async (req, res) => {
 exports.rankingPartidos = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT j.id, j.nombre, COUNT(e.partido_id) AS total_partidos
+      SELECT j.id, j.nombre, j.apellido, COUNT(e.partido_id) AS total_partidos
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       GROUP BY j.id
@@ -72,7 +72,7 @@ exports.rankingPartidos = async (req, res) => {
 exports.rankingAmarillas = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT j.id, j.nombre, SUM(e.tarjetas_amarillas) AS total_amarillas
+      SELECT j.id, j.nombre, j.apellido, SUM(e.tarjetas_amarillas) AS total_amarillas
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       GROUP BY j.id
@@ -89,7 +89,7 @@ exports.rankingAmarillas = async (req, res) => {
 exports.rankingRojas = async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT j.id, j.nombre, SUM(e.tarjetas_rojas) AS total_rojas
+      SELECT j.id, j.nombre, j.apellido, SUM(e.tarjetas_rojas) AS total_rojas
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       GROUP BY j.id
