@@ -71,7 +71,7 @@ exports.obtenerEstadisticasJugador = async (req, res) => {
           COALESCE(SUM(e.asistencias), 0) AS asistencias,
           COALESCE(SUM(e.tarjetas_amarillas), 0) AS tarjetas_amarillas,
           COALESCE(SUM(e.tarjetas_rojas), 0) AS tarjetas_rojas,
-          COUNT(e.partido_id) AS partidos_jugados
+          COUNT(e.asistio_partido) AS partidos_jugados
         FROM jugador j
         LEFT JOIN estadistica_partido e ON j.id = e.jugador_id
         WHERE j.id = ?
