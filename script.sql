@@ -33,6 +33,15 @@ CREATE TABLE IF NOT EXISTS estadistica_partido (
     asistencias INT DEFAULT 0,
     tarjetas_amarillas INT DEFAULT 0,
     tarjetas_rojas INT DEFAULT 0,
+    asistio_partido BOOL DEFAULT true NULL,
     FOREIGN KEY (jugador_id) REFERENCES jugador(id) ON DELETE CASCADE,
     FOREIGN KEY (partido_id) REFERENCES partido(id) ON DELETE CASCADE
+);
+
+-- Estadísticas individuales por partido
+CREATE TABLE IF NOT EXISTS lavado_camisetas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jugador_id INT NOT NULL,
+    fecha DATE NOT NULL,
+    FOREIGN KEY (jugador_id) REFERENCES jugador(id) ON DELETE CASCADE
 );

@@ -2,7 +2,7 @@
 const db = require('../db');
 
 // GET: Obtener todos los jugador
-exports.obtenerjugador = async (req, res) => {
+exports.obtenerjugadores = async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM jugador');
     res.json(rows);
