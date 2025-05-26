@@ -84,3 +84,60 @@ exports.detallesPorPartido = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener detalles del partido' });
   }
 };
+
+exports.estadisticasPorPartido = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [rows] = await db.query(`
+      SELECT e.id, e.jugador_id, j.nombre, j.apellido,
+             e.goles, e.asistencias, e.tarjetas_amarillas, e.tarjetas_rojas
+      FROM estadistica_partido e
+      JOIN jugador j ON e.jugador_id = j.id
+      WHERE e.partido_id = ?
+    `, [id]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener estadísticas del partido' });
+  }
+};
+
+exports.actualizarEstadistica = async (req, res) => {
+  const { id } = req.params;
+  const { goles, asistencias, tarjetas_amarillas, tarjetas_rojas } = req.body;
+
+  try {
+    await db.query(`
+      UPDATE estadistica_partido
+      SET goles = ?, asistencias = ?, tarjetas_amarillas = ?, tarjetas_rojas = ?
+      WHERE id = ?
+    `, [goles, asistencias, tarjetas_amarillas, tarjetas_rojas, id]);
+
+    res.json({ message: 'Estadística actualizada' });
+  } catch (err) {
+    res.status(500).json({ error: 'Error al actualizar' });
+  }
+};
+
+exports.eliminarEstadistica = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await db.query('DELETE FROM estadistica_partido WHERE id = ?', [id]);
+    res.json({ message: 'Estadística eliminada' });
+  } catch (err) {
+    res.status(500).json({ error: 'Error al eliminar estadística' });
+  }
+};
+
+exports.estadisticasJugadoresPartido = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [rows] = await db.query(`SELECT j.* FROM jugador j
+    WHERE NOT EXISTS (SELECT * FROM estadistica_partido ep where j.id = ep.jugador_id and ep.partido_id = ?)
+    `, [id]);
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener jugador' });
+  }
+};
