@@ -83,8 +83,7 @@ exports.obtenerEstadisticasJugadorPorAnio = async (req, res) => {
     );
 
     if (rows.length === 0) {
-      const jugador = await obtenerEstadisticasJugador(id);
-      console.log(`obtenerEstadisticasJugador ${jugador}`)
+      const jugador = obtenerEstadisticasJugadorPorId(id);
       return res.status(404).json(
         { 
           id: id, 
@@ -103,13 +102,12 @@ exports.obtenerEstadisticasJugadorPorAnio = async (req, res) => {
 
     res.json(rows[0]);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error al obtener estadísticas del jugador' });
+    res.status(500).json({ error: 'Error al obtener estadísticas del jugador por anio' });
   }
 };
 
-const obtenerEstadisticasJugador = async (id) => {
-
+exports.obtenerEstadisticasJugador = async (req, res) => {
+ const { id } = req.params;
   try {
     const [rows] = await db.query(
       `
@@ -132,15 +130,47 @@ const obtenerEstadisticasJugador = async (id) => {
       `,
       [id]
     );
-
     if (rows.length === 0) {
       console.error(`Jugador con id = ${id} no encontrado`);
-      return {};
+      return res.status(404).json({ error: 'Jugador no encontrado' });
     }
-    console.log(rows[0]);
-    return rows[0];
+    res.json(rows[0]);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: 'Error al obtener estadísticas del jugador' });
   }
 };
 
+const obtenerEstadisticasJugadorPorId = async (id) => {
+  try {
+    const [rows] = await db.query(
+      `
+        SELECT 
+          j.id,
+          j.nombre,
+          j.posicion_inicial,
+          j.posicion_secundaria,
+          j.foto_url,
+          j.numero,
+          COALESCE(SUM(e.goles), 0) AS goles,
+          COALESCE(SUM(e.asistencias), 0) AS asistencias,
+          COALESCE(SUM(e.tarjetas_amarillas), 0) AS tarjetas_amarillas,
+          COALESCE(SUM(e.tarjetas_rojas), 0) AS tarjetas_rojas,
+          COUNT(e.asistio_partido) AS partidos_jugados
+        FROM jugador j
+        LEFT JOIN estadistica_partido e ON j.id = e.jugador_id
+        WHERE j.id = ?
+        GROUP BY j.id
+      `,
+      [id]
+    );
+    if (rows.length === 0) {
+      console.error(`Jugador con id = ${id} no encontrado`);
+      return { error: 'Jugador no encontrado' };
+    }
+    return rows[0];
+  } catch (error) {
+    console.error(error);
+    return { error: 'Error al obtener estadísticas del jugador' };
+  }
+};

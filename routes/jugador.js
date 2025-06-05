@@ -5,6 +5,7 @@ const jugadorController = require('../controllers/jugadorController');
 
 router.get('/', jugadorController.obtenerjugadores);
 router.post('/', jugadorController.crearJugador);
+router.get('/:id/estadisticas', jugadorController.obtenerEstadisticasJugador);
 router.get('/:id/estadisticas/:anio', jugadorController.obtenerEstadisticasJugadorPorAnio);
 
 module.exports = router;
