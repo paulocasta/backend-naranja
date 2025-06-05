@@ -33,11 +33,24 @@ exports.crearPartido = async (req, res) => {
 
 // GET: Listar partido
 exports.totalPartidos = async (req, res) => {
+  const { id } = req.params;
   try {
-    const [row] = await db.query('SELECT COUNT(p.id) as total from partido p');
+    const [row] = await db.query(`SELECT COUNT(p.id) as total from partido p where p.fecha like ?`, [id + '%']);
     res.json(row[0].total);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener total partidos' });
   }
 };
+
+// GET: Listar anios de partidos
+exports.totalAnios = async (req, res) => {
+    try {
+    const [result] = await db.query('SELECT DISTINCT YEAR(p.fecha) as fecha FROM partido p');
+    const años = result.map(r => r.fecha);
+    res.json(años);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener total anios' });
+  }
+}
