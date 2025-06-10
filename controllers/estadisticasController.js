@@ -141,3 +141,37 @@ exports.estadisticasJugadoresPartido = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener jugador' });
   }
 };
+
+exports.obtenerEstadisticasPorAnio = async (req, res) => {
+  const { anio } = req.params;
+
+  try {
+    const [rows] = await db.query(
+      `
+     SELECT 
+          j.id,
+          j.nombre,
+          j.posicion_inicial,
+          j.posicion_secundaria,
+          j.foto_url,
+          j.numero,
+          COALESCE(SUM(e.goles), 0) AS goles,
+          COALESCE(SUM(e.asistencias), 0) AS asistencias,
+          COALESCE(SUM(e.tarjetas_amarillas), 0) AS tarjetas_amarillas,
+          COALESCE(SUM(e.tarjetas_rojas), 0) AS tarjetas_rojas,
+          COUNT(e.asistio_partido) AS partidos_jugados
+        FROM jugador j
+        LEFT JOIN estadistica_partido e ON j.id = e.jugador_id
+        LEFT JOIN partido p ON p.id = e.partido_id 
+        WHERE p.fecha like ?
+        GROUP BY j.id
+        ORDER BY j.numero 
+      `,
+      [anio+'%']
+    );
+
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener estadísticas del jugador por anio' });
+  }
+};

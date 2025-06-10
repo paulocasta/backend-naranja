@@ -10,5 +10,6 @@ router.get('/partido/:id', estadisticasController.estadisticasPorPartido);
 router.put('/:id', estadisticasController.actualizarEstadistica);
 router.delete('/:id', estadisticasController.eliminarEstadistica);
 router.get('/jugador/partido/:id', estadisticasController.estadisticasJugadoresPartido);
+router.get('/jugadores/:anio', estadisticasController.obtenerEstadisticasPorAnio);
 
 module.exports = router;
