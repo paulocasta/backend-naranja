@@ -8,7 +8,8 @@ exports.registrarEstadistica = async (req, res) => {
     asistencias,
     tarjetas_amarillas,
     tarjetas_rojas,
-    asistio_partido
+    asistio_partido,
+    atajo
   } = req.body;
 
   if (!jugador_id || !partido_id) {
@@ -18,8 +19,8 @@ exports.registrarEstadistica = async (req, res) => {
   try {
     const [result] = await db.query(
       `INSERT INTO estadistica_partido 
-        (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         jugador_id,
         partido_id,
@@ -27,7 +28,8 @@ exports.registrarEstadistica = async (req, res) => {
         asistencias || 0,
         tarjetas_amarillas || 0,
         tarjetas_rojas || 0,
-        asistio_partido || true
+        asistio_partido || true,
+        atajo || false
       ]
     );
     res.status(201).json({ message: 'Estadística registrada', id: result.insertId });
@@ -90,7 +92,8 @@ exports.estadisticasPorPartido = async (req, res) => {
   try {
     const [rows] = await db.query(`
       SELECT e.id, e.jugador_id, j.nombre, j.apellido,
-             e.goles, e.asistencias, e.tarjetas_amarillas, e.tarjetas_rojas
+             e.goles, e.asistencias, e.tarjetas_amarillas, e.tarjetas_rojas,
+             e.atajo
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       WHERE e.partido_id = ?
@@ -103,14 +106,14 @@ exports.estadisticasPorPartido = async (req, res) => {
 
 exports.actualizarEstadistica = async (req, res) => {
   const { id } = req.params;
-  const { goles, asistencias, tarjetas_amarillas, tarjetas_rojas } = req.body;
+  const { goles, asistencias, tarjetas_amarillas, tarjetas_rojas, atajo } = req.body;
 
   try {
     await db.query(`
       UPDATE estadistica_partido
-      SET goles = ?, asistencias = ?, tarjetas_amarillas = ?, tarjetas_rojas = ?
+      SET goles = ?, asistencias = ?, tarjetas_amarillas = ?, tarjetas_rojas = ?, atajo = ?
       WHERE id = ?
-    `, [goles, asistencias, tarjetas_amarillas, tarjetas_rojas, id]);
+    `, [goles, asistencias, tarjetas_amarillas, tarjetas_rojas, atajo, id]);
 
     res.json({ message: 'Estadística actualizada' });
   } catch (err) {
