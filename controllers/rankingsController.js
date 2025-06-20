@@ -139,3 +139,24 @@ exports.top3 = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener ranking de goleadores' });
   }
 };
+
+// 🧤 Top Arqueros
+exports.rankigsArqueros = async (req, res) => {
+  const { anio } = req.params;
+  try {
+    const [rows] = await db.query(`
+      SELECT j.id, j.nombre, j.apellido, SUM(e.atajo) AS total_arqueros
+      FROM estadistica_partido e
+      JOIN jugador j ON e.jugador_id = j.id
+      LEFT JOIN partido p ON p.id = e.partido_id
+      WHERE p.fecha like ?
+      AND e.atajo = true
+      GROUP BY j.id
+      ORDER BY total_arqueros ASC
+      LIMIT 10
+    `,[anio+'%']);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener ranking de goleadores' });
+  }
+};
