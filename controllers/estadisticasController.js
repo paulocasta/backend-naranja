@@ -93,7 +93,7 @@ exports.estadisticasPorPartido = async (req, res) => {
     const [rows] = await db.query(`
       SELECT e.id, e.jugador_id, j.nombre, j.apellido,
              e.goles, e.asistencias, e.tarjetas_amarillas, e.tarjetas_rojas,
-             e.atajo
+             e.atajo, e.asistio_partido
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
       WHERE e.partido_id = ?
