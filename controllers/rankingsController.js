@@ -145,13 +145,13 @@ exports.rankigsArqueros = async (req, res) => {
   const { anio } = req.params;
   try {
     const [rows] = await db.query(`
-      SELECT j.id, j.nombre, j.apellido, SUM(e.atajo) AS goles
+      SELECT j.id, j.nombre, j.apellido, SUM(p.goles_rival) AS goles
       FROM estadistica_partido e
       JOIN jugador j ON e.jugador_id = j.id
-      LEFT JOIN partido p ON p.id = e.partido_id
+      JOIN partido p ON p.id = e.partido_id
       WHERE p.fecha like ?
       AND e.atajo = true
-      GROUP BY j.id
+      GROUP BY j.id, j.nombre, j.apellido
       ORDER BY goles ASC
       LIMIT 10
     `,[anio+'%']);
