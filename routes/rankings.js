@@ -9,6 +9,7 @@ router.get('/partidos/:anio', rankingsController.rankingPartidos);
 router.get('/amarillas/:anio', rankingsController.rankingAmarillas);
 router.get('/rojas/:anio', rankingsController.rankingRojas);
 router.get('/top3/:anio', rankingsController.top3);
+router.get('/top3/torneo/:torneoId', rankingsController.top3torneo);
 router.get('/arqueros/:anio', rankingsController.rankigsArqueros);
 
 module.exports = router;

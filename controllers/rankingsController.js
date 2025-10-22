@@ -140,6 +140,26 @@ exports.top3 = async (req, res) => {
   }
 };
 
+// 🥇 Top Goleadores por torneo
+exports.top3torneo = async (req, res) => {
+  const { torneoId } = req.params;
+  try {
+    const [rows] = await db.query(`
+      SELECT j.id, j.nombre, j.apellido, SUM(e.goles) AS total_goles, COUNT(e.partido_id) AS partidos_jugados, j.numero, j.foto_url
+      FROM estadistica_partido e
+      JOIN jugador j ON e.jugador_id = j.id
+      LEFT JOIN partido p ON p.id = e.partido_id
+      WHERE p.torneo_id = ?
+      GROUP BY j.id
+      ORDER BY total_goles DESC
+      LIMIT 3
+    `,[torneoId]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener ranking de goleadores' });
+  }
+};
+
 // 🧤 Top Arqueros
 exports.rankigsArqueros = async (req, res) => {
   const { anio } = req.params;

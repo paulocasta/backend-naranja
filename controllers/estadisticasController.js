@@ -43,9 +43,10 @@ exports.historialJugador = async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await db.query(`
-      SELECT e.*, p.fecha, p.rival
+      SELECT e.*, p.fecha, r.nombre
       FROM estadistica_partido e
       JOIN partido p ON e.partido_id = p.id
+      JOIN rival r on p.rival_id = r.id
       WHERE e.jugador_id = ?
       ORDER BY p.fecha DESC
     `, [id]);
@@ -174,6 +175,54 @@ exports.obtenerEstadisticasPorAnio = async (req, res) => {
     );
 
     res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener estadísticas del jugador por anio' });
+  }
+};
+
+exports.obtenerEstadisticasPorTorneo = async (req, res) => {
+  const { torneoId } = req.params;
+
+  try {
+    const [rows] = await db.query(
+      `
+     SELECT 
+          j.id,
+          j.nombre,
+          j.posicion_inicial,
+          j.posicion_secundaria,
+          j.foto_url,
+          j.numero,
+          COALESCE(SUM(e.goles), 0) AS goles,
+          COALESCE(SUM(e.asistencias), 0) AS asistencias,
+          COALESCE(SUM(e.tarjetas_amarillas), 0) AS tarjetas_amarillas,
+          COALESCE(SUM(e.tarjetas_rojas), 0) AS tarjetas_rojas,
+          COUNT(e.asistio_partido) AS partidos_jugados
+        FROM jugador j
+        LEFT JOIN estadistica_partido e ON j.id = e.jugador_id
+        LEFT JOIN partido p ON p.id = e.partido_id 
+        WHERE p.torneo_id = ?
+        GROUP BY j.id
+        ORDER BY j.numero 
+      `,
+      [torneoId]
+    );
+    let outputData = rows.map(item => {
+      return {
+        "id": item.id,
+        "nombre": item.nombre,
+        "posicion_inicial": item.posicion_inicial,
+        "posicion_secundaria": item.posicion_secundaria,
+        "foto_url": item.foto_url,
+        "numero": item.numero,
+        "goles": parseInt(item.goles),
+        "asistencias": item.asistencias,
+        "tarjetas_amarillas": item.tarjetas_amarillas,
+        "tarjetas_rojas": item.tarjetas_rojas,
+        "partidos_jugados": item.partidos_jugados
+      };
+    });
+    res.json(outputData);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener estadísticas del jugador por anio' });
   }

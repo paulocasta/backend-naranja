@@ -10,6 +10,8 @@ const rankingsRoutes = require('./routes/rankings');
 const authRoutes = require('./routes/auth');
 const uploadRoutes = require('./routes/upload');
 const lavadosRoutes = require('./routes/lavados');
+const torneosRoutes = require('./routes/torneos');
+const rivalesRoutes = require('./routes/rivales');
 
 const path = require('path');
 
@@ -25,6 +27,8 @@ app.use('/api/auth', authRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/upload', uploadRoutes);
 app.use('/api/lavados', lavadosRoutes);
+app.use('/api/torneos', torneosRoutes);
+app.use('/api/rivales', rivalesRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
