@@ -9,18 +9,19 @@ exports.registrarEstadistica = async (req, res) => {
     tarjetas_amarillas,
     tarjetas_rojas,
     asistio_partido,
-    atajo
+    atajo,
+    torneo_id
   } = req.body;
 
-  if (!jugador_id || !partido_id) {
-    return res.status(400).json({ error: 'jugador_id y partido_id son obligatorios' });
+  if (!jugador_id || !partido_id || !torneo_id)  {
+    return res.status(400).json({ error: 'jugador_id, torneo_id o partido_id son obligatorios' });
   }
 
   try {
     const [result] = await db.query(
       `INSERT INTO estadistica_partido 
-        (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         jugador_id,
         partido_id,
@@ -29,7 +30,8 @@ exports.registrarEstadistica = async (req, res) => {
         tarjetas_amarillas || 0,
         tarjetas_rojas || 0,
         asistio_partido || true,
-        atajo || false
+        atajo || false,
+        torneo_id
       ]
     );
     res.status(201).json({ message: 'Estadística registrada', id: result.insertId });

@@ -30,7 +30,7 @@ app.use('/api/lavados', lavadosRoutes);
 app.use('/api/torneos', torneosRoutes);
 app.use('/api/rivales', rivalesRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3010;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
