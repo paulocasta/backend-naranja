@@ -41,6 +41,10 @@ CREATE TABLE IF NOT EXISTS partido (
     FOREIGN KEY (torneo_id) REFERENCES torneo(id) ,
     FOREIGN KEY (rival_id) REFERENCES rival(id) 
 );
+alter table partido ADD COLUMN torneo_id INT NOT NULL;
+alter table partido ADD COLUMN rival_id INT NOT NULL;
+alter table partido add constraint torneo_unico unique(torneo_id);
+alter table partido add constraint rival_unico unique(rival_id);
 
 -- Estadísticas individuales por partido
 CREATE TABLE IF NOT EXISTS estadistica_partido (
@@ -59,10 +63,23 @@ CREATE TABLE IF NOT EXISTS estadistica_partido (
     FOREIGN KEY (torneo_id) REFERENCES torneo(id)
 );
 
+alter table estadistica_partido ADD COLUMN torneo_id INT NOT NULL;
+alter table estadistica_partido add constraint torneo_unico unique(torneo_id);
+
 -- Lavado de camisetas
 CREATE TABLE IF NOT EXISTS lavado_camisetas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     jugador_id INT NOT NULL,
     fecha DATE NOT NULL,
     FOREIGN KEY (jugador_id) REFERENCES jugador(id) 
+);
+
+-- 
+CREATE TABLE IF NOT EXISTS rival_torneo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rival_id INT NOT NULL,
+    torneo_id INT NOT NULL,
+    FOREIGN KEY (rival_id) REFERENCES rival(id),
+    FOREIGN KEY (torneo_id) REFERENCES torneo(id),
+    CONSTRAINT UC_rival_torneo UNIQUE (rival_id,torneo_id)
 );

@@ -58,27 +58,3 @@ INSERT INTO partido VALUES (10,'2025-06-07',3,3,1,6);
 INSERT INTO partido VALUES (11,'2025-07-05',3,3,1,16);
 INSERT INTO partido VALUES (12,'2025-06-28',1,3,1,10);
 INSERT INTO partido VALUES (13,'2025-07-19',0,0,1,7);
-
--- partido 1 clausura 2025
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES ( 3,1,1,1,0,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES ( 4,1,0,0,1,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES (15,1,0,0,1,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES (16,1,1,0,0,0,1,1,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES (11,1,0,0,0,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES ( 6,1,0,0,0,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES (14,1,0,0,0,0,1,1,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES ( 1,1,0,0,0,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES (17,1,0,0,0,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES ( 7,1,0,0,0,0,1,0,1);
-INSERT INTO estadistica_partido (jugador_id, partido_id, goles, asistencias, tarjetas_amarillas, tarjetas_rojas, asistio_partido, atajo, torneo_id) VALUES (10,1,0,0,0,0,1,0,1);
-
--- lavados camisetas
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES( 8,'2025-05-17');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES( 7,'2025-05-10');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES(12,'2025-04-05');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES(15,'2025-05-03');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES( 3,'2025-05-31');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES( 1,'2025-01-04');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES(11,'2025-06-07');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES( 6,'2025-05-24');
-INSERT INTO lavado_camisetas(jugador_id, fecha) VALUES( 5,'2025-06-28');
